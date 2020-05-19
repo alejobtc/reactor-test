@@ -10,14 +10,17 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class FluxMonoFactoryTest {
-    List<String> names = Arrays.asList("Willie","Crisitian","Caminlo","Juan","Sandro");
+    List<String> names = Arrays.asList("Willie","Crisitian");
 
     @Test
     public void fluxUSingIterable(){
-        Flux<String> namesF = Flux.fromIterable(names);
+        Flux<String> namesF = Flux.fromIterable(names).log();
 
+        namesF.subscribe(System.out::println);
         StepVerifier.create(namesF)
-                .expectNext("Willie","Crisitian","Caminlo","Juan","Sandro")
+                .expectSubscription()
+                .expectNext("Willie")
+                .expectNext("Crisitian")
                 .verifyComplete();
     }
 
@@ -25,9 +28,7 @@ public class FluxMonoFactoryTest {
     public void fluxUsingArray(){
         String[] names = new String[]{"Willie","Crisitian","Caminlo","Juan","Sandro"};
         Flux<String> namesF = Flux.fromArray(names);
-        StepVerifier.create(namesF)
-                .expectNext("Willie","Crisitian","Caminlo","Juan","Sandro")
-                .verifyComplete();
+        namesF.subscribe(System.out::println);
     }
 
     @Test
@@ -62,6 +63,24 @@ public class FluxMonoFactoryTest {
         StepVerifier.create(intFlux)
                 .expectNext(1,2,3,4,5)
                 .verifyComplete();
+    }
+
+    @Test
+    public void simplestFlux(){
+        Flux<String> flux = Flux.just("jadns","dajndsja","jncda","kdscndc");
+
+        flux.subscribe(elem->{
+            System.out.println(elem);
+        });
+    }
+
+    @Test
+    public void simplestMono(){
+        Mono<String> mono = Mono.just("jadns");
+
+        mono.subscribe(elem->{
+            System.out.println(elem);
+        });
     }
 }
 

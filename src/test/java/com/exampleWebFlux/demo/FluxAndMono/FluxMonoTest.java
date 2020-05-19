@@ -5,6 +5,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 public class FluxMonoTest {
+
     @Test
     public void FluxTest(){
         Flux<String> stringFlux = Flux.just("Alejandro","Santiago","Juan")
@@ -52,4 +53,5 @@ public class FluxMonoTest {
                 .expectErrorMessage("Tenemos un problema")
                 .verify();
     }
+
 }
